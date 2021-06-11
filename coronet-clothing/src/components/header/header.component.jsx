@@ -5,8 +5,13 @@ import { default as Logo } from '../../assets/coronet.svg';
 import { auth } from '../../firebase/firebase.utils';
 import './header.styles.scss';
 import { connect } from 'react-redux';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CardDropdown from '../cart-dropdown/cart-dropdown.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ currentUser }) => (
+
+
+const Header = ({ currentUser, hidden }) => (
     <div className='header'>
         <Link className='logo-container' to='/'>
             <img className='logo' src={Logo} alt="logo" />
@@ -24,12 +29,17 @@ const Header = ({ currentUser }) => (
                     :
                     <Link className='option' to='/signin'>SIGN IN</Link>
             }
+            <CartIcon />
         </div>
+        { hidden ? null :
+            <CartDropdown />}
+        {/* if hidden === hide CardDropdown */}
     </div>
 );
 
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({ //destructuring the state
+    currentUser,
+    hidden
 });
 
 export default connect(mapStateToProps)(Header);
